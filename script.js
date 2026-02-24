@@ -1,17 +1,50 @@
 const output = document.getElementById("output");
 const cmd = document.getElementById("cmd");
 
-const GITHUB_USERNAME = "cyberheister";
+const USER = "soumalya";
+const HOST = "portfolio";
 
-/* Helper */
+/* Utility print */
 function print(text = "") {
   const div = document.createElement("div");
   div.className = "command";
   div.textContent = text;
   output.appendChild(div);
+  output.scrollTop = output.scrollHeight;
 }
 
-/* ASCII Header */
+/* Prompt print */
+function promptLine(command) {
+  print(`${USER}@${HOST}:~$ ${command}`);
+}
+
+/* =========================
+   SSH LOGIN SIMULATION
+========================= */
+
+const sshSequence = [
+  `Connecting to ${USER}@${HOST}...`,
+  "Authenticating with public key...",
+  "Access granted.",
+  ""
+];
+
+let sshStep = 0;
+
+function startSSH() {
+  if (sshStep < sshSequence.length) {
+    print(sshSequence[sshStep]);
+    sshStep++;
+    setTimeout(startSSH, 600);
+  } else {
+    showHeader();
+  }
+}
+
+/* =========================
+   HEADER / INTRO
+========================= */
+
 function showHeader() {
   print("Soumalya Chandr — DevOps Engineer");
   print("AWS | Terraform | Jenkins | Docker | Kubernetes");
@@ -19,29 +52,39 @@ function showHeader() {
   print("Type 'help' to see available commands.");
 }
 
-/* GitHub Projects */
+/* =========================
+   GITHUB PROJECTS
+========================= */
+
+const GITHUB_USERNAME = "cyberheister";
+
 async function showProjects() {
   print("Fetching GitHub repositories...");
   try {
-    const res = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated`);
+    const res = await fetch(
+      `https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated`
+    );
     const repos = await res.json();
 
     repos.slice(0, 5).forEach(repo => {
-      print(`• ${repo.name} — ⭐ ${repo.stargazers_count}`);
+      print(`• ${repo.name}  ⭐ ${repo.stargazers_count}`);
       if (repo.description) {
         print(`  ${repo.description}`);
       }
     });
-  } catch (err) {
-    print("Unable to fetch repositories.");
+  } catch {
+    print("Failed to fetch repositories.");
   }
 }
 
-/* Command Handler */
+/* =========================
+   COMMAND HANDLER
+========================= */
+
 cmd.addEventListener("keydown", async (e) => {
   if (e.key === "Enter") {
     const value = cmd.value.trim();
-    print(`$ ${value}`);
+    promptLine(value);
 
     switch (value) {
       case "help":
@@ -49,13 +92,13 @@ cmd.addEventListener("keydown", async (e) => {
         print("skills     → Technical skills");
         print("projects   → GitHub projects");
         print("resume     → Download resume");
-        print("contact    → Contact info");
+        print("contact    → Contact details");
         print("clear      → Clear terminal");
         break;
 
       case "about":
         print(
-          "DevOps Engineer with 6+ years of experience designing,\n" +
+          "DevOps Engineer with 6+ years of experience building,\n" +
           "automating, and operating AWS cloud infrastructure.\n" +
           "Strong focus on CI/CD, IaC, security, and cost optimization."
         );
@@ -86,14 +129,19 @@ cmd.addEventListener("keydown", async (e) => {
         output.innerHTML = "";
         break;
 
+      case "":
+        break;
+
       default:
         print("Command not found. Type 'help'.");
     }
 
     cmd.value = "";
-    output.scrollTop = output.scrollHeight;
   }
 });
 
-/* Start */
-showHeader();
+/* =========================
+   START
+========================= */
+
+startSSH();
