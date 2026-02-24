@@ -1,58 +1,66 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
-  background: black;
-  color: #00ff88;
-  font-family: "Courier New", monospace;
-  overflow: hidden;
+  background: #0d1117;
+  color: #c9d1d9;
+  font-family: Consolas, Monaco, "Courier New", monospace;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* Matrix Canvas */
-#matrix {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: -1;
+.terminal-wrapper {
+  width: 100%;
+  padding: 24px;
 }
 
-/* Terminal */
 .terminal {
-  padding: 30px;
-  height: 100vh;
-  box-sizing: border-box;
+  max-width: 960px;
+  margin: auto;
+  background: #010409;
+  border-radius: 12px;
+  padding: 28px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.6);
 }
 
 .command {
   margin: 6px 0;
+  line-height: 1.6;
   white-space: pre-wrap;
 }
 
-/* Input Line */
 .input-line {
   display: flex;
-  align-items: center;
+  margin-top: 14px;
 }
 
 .prompt {
-  margin-right: 5px;
+  color: #58a6ff;
+  margin-right: 8px;
+  white-space: nowrap;
 }
 
 input {
-  background: black;
+  flex: 1;
+  background: transparent;
   border: none;
-  color: #00ff88;
+  color: #c9d1d9;
   font-family: inherit;
-  font-size: 16px;
+  font-size: 15px;
   outline: none;
-  width: 300px;
 }
 
-/* Cursor */
-.cursor {
-  margin-left: 5px;
-  animation: blink 1s infinite;
+pre {
+  color: #58a6ff;
+  margin: 12px 0;
 }
 
-@keyframes blink {
-  0%, 50%, 100% { opacity: 1; }
-  25%, 75% { opacity: 0; }
+@media (max-width: 600px) {
+  .terminal {
+    padding: 18px;
+  }
 }

@@ -2,27 +2,28 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Soumalya | DevOps Terminal</title>
+  <title>Soumalya Chandr | DevOps Engineer</title>
+
+  <!-- SEO -->
+  <meta name="description" content="DevOps Engineer with 6+ years of experience in AWS, CI/CD, Terraform, and automation." />
+  <meta name="keywords" content="DevOps Engineer, AWS, Terraform, Jenkins, Kubernetes" />
+  <meta name="author" content="Soumalya Chandr" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <!-- Matrix Background -->
-  <canvas id="matrix"></canvas>
+  <main class="terminal-wrapper">
+    <section class="terminal">
+      <div id="output"></div>
 
-  <!-- Typing Sound -->
-  <audio id="typeSound" src="typing.mp3"></audio>
-
-  <!-- Terminal -->
-  <div class="terminal">
-    <div id="output"></div>
-
-    <div class="input-line">
-      <span class="prompt">soumalya@portfolio:~$</span>
-      <input id="cmd" autofocus />
-      <span class="cursor">█</span>
-    </div>
-  </div>
+      <div class="input-line">
+        <span class="prompt">soumalya@portfolio:~$</span>
+        <input id="cmd" autofocus />
+      </div>
+    </section>
+  </main>
 
   <script src="script.js"></script>
 </body>
