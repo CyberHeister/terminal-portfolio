@@ -1,0 +1,58 @@
+body {
+  margin: 0;
+  background: black;
+  color: #00ff88;
+  font-family: "Courier New", monospace;
+  overflow: hidden;
+}
+
+/* Matrix Canvas */
+#matrix {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+/* Terminal */
+.terminal {
+  padding: 30px;
+  height: 100vh;
+  box-sizing: border-box;
+}
+
+.command {
+  margin: 6px 0;
+  white-space: pre-wrap;
+}
+
+/* Input Line */
+.input-line {
+  display: flex;
+  align-items: center;
+}
+
+.prompt {
+  margin-right: 5px;
+}
+
+input {
+  background: black;
+  border: none;
+  color: #00ff88;
+  font-family: inherit;
+  font-size: 16px;
+  outline: none;
+  width: 300px;
+}
+
+/* Cursor */
+.cursor {
+  margin-left: 5px;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 50%, 100% { opacity: 1; }
+  25%, 75% { opacity: 0; }
+}

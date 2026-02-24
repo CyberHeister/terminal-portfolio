@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Soumalya | DevOps Terminal</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Matrix Background -->
+  <canvas id="matrix"></canvas>
+
+  <!-- Typing Sound -->
+  <audio id="typeSound" src="typing.mp3"></audio>
+
+  <!-- Terminal -->
+  <div class="terminal">
+    <div id="output"></div>
+
+    <div class="input-line">
+      <span class="prompt">soumalya@portfolio:~$</span>
+      <input id="cmd" autofocus />
+      <span class="cursor">█</span>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
