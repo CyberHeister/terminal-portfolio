@@ -193,14 +193,6 @@ a {
   cursor: default;
 }
 
-#cmd:focus-visible {
-  outline: none;
-}
-
-.terminal:focus-within .prompt {
-  color: var(--accent);
-}
-
 /* ---------- no-JS fallback ----------
    Without JS the terminal is a static document: stop the empty #output from
    flex-growing and shoving the fallback text to the bottom, and drop the

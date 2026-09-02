@@ -44,9 +44,9 @@ function printHTML(html, kind = "") {
 
 function printLink(label, href) {
   const pad = label.padEnd(9, " ");
-  const safe = href.replace(/"/g, "&quot;");
+  const safe = escapeHTML(href);
   printHTML(
-    `${pad}: <a href="${safe}" target="_blank" rel="noopener noreferrer">${href}</a>`
+    `${escapeHTML(pad)}: <a href="${safe}" target="_blank" rel="noopener noreferrer">${safe}</a>`
   );
 }
 
@@ -78,15 +78,20 @@ typingAudio.preload = "none";
 typingAudio.volume = 0.35;
 
 let soundOn = false;
+let blipTimer = null;
 
+/* typing.mp3 is ~8s of continuous typing, not a single keystroke. Play a
+   short slice of it and stop: one shared element, restarted per keypress,
+   so fast typing sounds continuous instead of stacking 8s clips. */
 function blip() {
   if (!soundOn) return;
   try {
-    const a = typingAudio.cloneNode();
-    a.volume = typingAudio.volume;
-    a.play().catch(() => {});
+    typingAudio.currentTime = 0;
+    typingAudio.play().catch(() => {});
+    clearTimeout(blipTimer);
+    blipTimer = setTimeout(() => typingAudio.pause(), 90);
   } catch {
-    /* audio unsupported — silently ignore */
+    /* currentTime can throw before metadata loads — ignore */
   }
 }
 
@@ -335,7 +340,10 @@ function openResume() {
     printLink("GitHub", LINKS.github);
     return;
   }
-  const win = window.open(RESUME_FILE, "_blank", "noopener");
+  /* Do not pass "noopener" in the features string: window.open() then
+     returns null even on success, so a blocked-popup check is impossible.
+     Clear opener on the handle instead. */
+  const win = window.open(RESUME_FILE, "_blank");
   if (!win) {
     printHTML(
       `Popup blocked. <a href="${RESUME_FILE}" target="_blank" rel="noopener noreferrer">Open resume.pdf</a>`,
@@ -343,6 +351,7 @@ function openResume() {
     );
     return;
   }
+  win.opener = null;
   print("Opening resume...", "ok");
 }
 
@@ -397,7 +406,7 @@ async function showProjects() {
   owned.slice(0, 5).forEach((repo) => {
     printHTML(
       `• <a href="${escapeHTML(repo.html_url)}" target="_blank" rel="noopener noreferrer">${escapeHTML(repo.name)}</a>` +
-      `  <span class="out-dim">★ ${repo.stargazers_count}</span>`
+      `  <span class="out-dim">★ ${Number(repo.stargazers_count) || 0}</span>`
     );
     if (repo.description) print(`  ${repo.description}`, "dim");
     if (repo.language) print(`  ${repo.language}`, "dim");
@@ -572,6 +581,10 @@ cmd.addEventListener("keydown", (e) => {
     historyIndex = -1;
     return;
   }
+
+  /* Pressing Shift alone, or any Ctrl/Cmd shortcut, is not a keystroke. */
+  if (e.ctrlKey || e.metaKey || e.altKey) return;
+  if (["Shift", "Control", "Alt", "Meta", "CapsLock", "Escape"].includes(e.key)) return;
 
   blip();
 });
